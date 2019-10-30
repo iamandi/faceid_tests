@@ -13,27 +13,52 @@ export default class Upload extends React.Component {
       left: 0,
       width: 0,
       height: 0,
-      canvas: null
+      canvas: null,
+      ctx: null
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     const canvas = this.refs.canvas;
-    console.log({ canvas });
     const ctx = canvas.getContext("2d");
     const img = this.refs.image;
 
-    console.log({ img });
-
-    this.setState({ canvas });
+    console.log({ canvas });
+    console.log({ ctx });
+    this.setState({ canvas, ctx });
 
     img.onload = () => {
       ctx.drawImage(img, 0, 0);
       ctx.font = "40px Courier";
-      ctx.fillText(this.props.text, 210, 75);
+      //ctx.fillText(this.props.text, 210, 75);
     };
   }
+
+  hChange = () => {
+    const { ctx, canvas, top, left, width, height } = this.state;
+    const img = this.refs.image;
+
+    console.log({ ctx, canvas, top, left, width, height });
+
+    ctx.font = "40px Courier";
+    ctx.color = "green";
+    ctx.fillText("asdasd", top, left, width, height);
+
+    console.log(`--> img: ${img}`);
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = ctx.canvas.toDataURL("image/jpeg");
+    //const drl = dataURL.slice("data:image/jpeg;base64,".length);
+
+    img.onload = () => {
+      console.log("asdadsadsasasdas");
+      //ctx.drawImage(img, 0, 0);
+      ctx.font = "40px Courier";
+      ctx.color = "green";
+      ctx.fillText("asdasd", 210, 75);
+    };
+  };
 
   handleChange(e) {
     e.preventDefault();
@@ -75,13 +100,16 @@ export default class Upload extends React.Component {
   render() {
     return (
       <div>
-        <canvas ref='canvas' width={640} height={425}>
+        <canvas ref='canvas' width={1040} height={1020} onClick={this.hChange}>
           <img
             ref='image'
             src='https://upload.wikimedia.org/wikipedia/commons/c/c2/Woman_5.jpg'
             alt='user'
           />
         </canvas>
+        <button className='btn btn-primary' onClick={this.handleChange}>
+          Button
+        </button>
       </div>
     );
   }
